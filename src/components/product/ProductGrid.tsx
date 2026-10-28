@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 import type { Product } from '../../types/product';
 
 const API_ORIGIN = (
-  import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+  import.meta.env.VITE_API_BASE_URL || 'https://egb-server-69b0.onrender.com'
 ).replace(/\/+$/, '');
 
 const IMAGE_FALLBACK = 'https://via.placeholder.com/400x500?text=No+Image';
