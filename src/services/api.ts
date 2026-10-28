@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL?.trim() || "http://127.0.0.1:8000";
+  import.meta.env.VITE_API_URL?.trim() || "https://egb-server-69b0.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
