@@ -1,12 +1,6 @@
 // src/pages/MiniGame.tsx
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-} from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Point = { x: number; y: number };
 type AnimalType = 'chick' | 'hen' | 'rooster';
@@ -50,7 +44,6 @@ const POINTS: Record<AnimalType, number> = {
   rooster: 12,
 };
 
-// Single highest-tier reward only — never stacked
 const REWARD_TIERS = [
   { score: 35, discount: 25, label: 'Farm Helper', type: 'fixed' },
   { score: 70, discount: 50, label: 'Chicken Keeper', type: 'fixed' },
@@ -69,24 +62,8 @@ const ANIMAL_SPEED: Record<AnimalType, number> = {
   rooster: 0.40,
 };
 
-const GAME_REWARD_PREFIX = 'EGB-';
-
-function isGameRewardCoupon(c: { code?: string; is_game_reward?: boolean; source?: string }) {
-  return (
-    Boolean(c.is_game_reward) ||
-    c.source === 'game' ||
-    String(c.code || '').toUpperCase().startsWith(GAME_REWARD_PREFIX)
-  );
-}
-
 export default function MiniGame() {
-  const { user } = useAuth();
-  const cartContext = useCart() as any;
-
-  const refreshCoupons =
-    cartContext?.refreshCoupons ||
-    cartContext?.fetchCoupons ||
-    (() => {});
+  const navigate = useNavigate();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -215,43 +192,16 @@ export default function MiniGame() {
         expiresAt: expirationDate.toLocaleDateString(),
       };
 
+      // Direct API sync
       try {
-        const existingLocal = JSON.parse(
-          localStorage.getItem('egb_saved_coupons') || '[]'
-        ) as Array<Record<string, unknown>>;
-
-        const nonGameOnly = existingLocal.filter(
-          (c) => !isGameRewardCoupon(c as { code?: string; is_game_reward?: boolean; source?: string })
-        );
-
-        nonGameOnly.push({
-          code: generatedCode,
-          discount: cappedDiscount,
-          type: bestTier.type,
-          description: `EGB Backyard Farm Catcher · ${bestTier.label}`,
-          is_game_reward: true,
-          source: 'game',
-          created_at: new Date().toISOString(),
-          expires_at: expirationDate.toISOString(),
-          gained_at: new Date().toISOString(),
-        });
-
-        localStorage.setItem('egb_saved_coupons', JSON.stringify(nonGameOnly));
-      } catch {
-        // ignore
-      }
-
-      try {
-        const apiUrl = (
-          import.meta.env.VITE_API_BASE_URL ||
-          'https://cc-backend-production-00fe.up.railway.app/api/v1'
+        const baseUrl = (
+          import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
         ).replace(/\/+$/, '');
-
         const token =
           localStorage.getItem('token') ||
           localStorage.getItem('access_token');
 
-        await fetch(`${apiUrl}/coupons/claim-game-reward`, {
+        await fetch(`${baseUrl}/api/v1/coupons/claim-game-reward`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -267,15 +217,40 @@ export default function MiniGame() {
             replace_previous_game_rewards: true,
           }),
         });
-
-        await refreshCoupons();
       } catch (err) {
-        console.log('EGB Backyard reward synced locally.', err);
+        console.warn('Backend API reward post error:', err);
+      }
+
+      // Local storage backup
+      try {
+        const savedCoupons = JSON.parse(
+          localStorage.getItem('egb_saved_coupons') || '[]'
+        );
+        const filtered = savedCoupons.filter(
+          (c: any) =>
+            !c.is_game_reward &&
+            c.source !== 'game' &&
+            !String(c.code).startsWith('EGB-')
+        );
+
+        filtered.push({
+          code: generatedCode,
+          discount: cappedDiscount,
+          type: bestTier.type,
+          description: `EGB Backyard Farm Catcher · ${bestTier.label}`,
+          is_game_reward: true,
+          source: 'game',
+          gained_at: new Date().toISOString(),
+        });
+
+        localStorage.setItem('egb_saved_coupons', JSON.stringify(filtered));
+      } catch {
+        // ignore
       }
 
       setEarnedCode(reward);
     },
-    [refreshCoupons]
+    []
   );
 
   const animateGame = useCallback(() => {
@@ -667,13 +642,22 @@ export default function MiniGame() {
                     {earnedCode.label} · Single reward · Auto-saved
                   </div>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => void copyToClipboard(earnedCode.code)}
-                  className="rounded-lg bg-[#315c34] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#244727] shrink-0"
-                >
-                  {copyFeedback ? 'Copied!' : earnedCode.code}
-                </button>
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => void copyToClipboard(earnedCode.code)}
+                    className="rounded-lg bg-[#315c34] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#244727] shrink-0"
+                  >
+                    {copyFeedback ? 'Copied!' : earnedCode.code}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/promos')}
+                    className="rounded-lg border border-[#315c34] bg-white px-2.5 py-1.5 text-xs font-bold text-[#315c34] hover:bg-emerald-50 shrink-0"
+                  >
+                    Promos →
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="mt-1">
@@ -766,19 +750,15 @@ export default function MiniGame() {
                   EGB Backyard Challenge
                 </h3>
                 <p className="mt-1 max-w-sm text-xs text-[#71806c]">
-                  Animals flee farther and run faster. Basket holds only{' '}
-                  {MAX_CARRY}. You get{' '}
+                  Catch animals and deliver them to the coop! You get{' '}
                   <strong>one coupon</strong> — the highest tier you reach at
                   the end of the round.
                 </p>
                 <div className="mt-3 flex flex-wrap justify-center gap-3 text-xs text-[#5a6b52]">
-                  <span>🐤 3pts (fast)</span>
+                  <span>🐤 3pts</span>
                   <span>🐔 6pts</span>
                   <span>🐓 12pts</span>
                   <span>🥚 +12 & boost</span>
-                </div>
-                <div className="mt-2 text-[10px] text-[#829078]">
-                  Tiers: 35 → ₱25 · 70 → ₱50 · 120 → ₱100
                 </div>
                 <button
                   type="button"
@@ -800,7 +780,7 @@ export default function MiniGame() {
                 {earnedCode ? (
                   <div className="mt-3 w-full max-w-xs rounded-xl border border-[#d6e3cb] bg-white p-3 text-left shadow-xs">
                     <div className="text-[10px] font-bold uppercase text-[#829078]">
-                      Your Single Reward
+                      Your Reward Coupon
                     </div>
                     <div className="text-lg font-black text-[#315c34]">
                       ₱{earnedCode.discount} OFF · {earnedCode.label}
@@ -808,19 +788,26 @@ export default function MiniGame() {
                     <div className="mt-1 font-mono text-xs font-bold text-slate-700">
                       {earnedCode.code}
                     </div>
-                    <div className="mt-1 text-[10px] text-[#7b8874]">
-                      Expires {earnedCode.expiresAt} · Replaces any prior game
-                      coupon
+                    <div className="mt-3 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => void copyToClipboard(earnedCode.code)}
+                        className="flex-1 rounded-lg bg-[#315c34] py-2 text-xs font-bold text-white hover:bg-[#244727]"
+                      >
+                        {copyFeedback ? 'Copied!' : 'Copy Code'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/promos')}
+                        className="flex-1 rounded-lg border border-[#315c34] bg-white py-2 text-xs font-bold text-[#315c34] hover:bg-emerald-50"
+                      >
+                        View Promos →
+                      </button>
                     </div>
                   </div>
                 ) : (
                   <p className="mt-2 text-xs font-bold text-rose-600">
                     Score at least 35 points to earn an EGB Backyard coupon!
-                  </p>
-                )}
-                {score >= highScore && score > 0 && (
-                  <p className="mt-2 text-xs font-bold text-[#d97706]">
-                    New High Score!
                   </p>
                 )}
                 <button
@@ -935,23 +922,6 @@ export default function MiniGame() {
                       COMBO x{comboDisplay}!
                     </div>
                   )}
-
-                  {isPaused && (
-                    <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#253e28]/60 backdrop-blur-xs">
-                      <div className="rounded-xl bg-white p-5 text-center shadow-lg">
-                        <div className="text-xl font-black text-[#315c34]">
-                          Game Paused
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setIsPaused(false)}
-                          className="mt-3 rounded-lg bg-[#315c34] px-4 py-2 text-xs font-bold text-white"
-                        >
-                          Resume
-                        </button>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex w-full max-w-[420px] items-center justify-between rounded-xl bg-[#f1f5e9] p-3">
@@ -962,9 +932,7 @@ export default function MiniGame() {
                         {game.carried} / {MAX_CARRY} Animals
                       </div>
                       <div className="text-[10px] text-[#71806c]">
-                        {game.carried >= MAX_CARRY
-                          ? 'Full! Deliver to coop'
-                          : 'Deliver to Coop'}
+                        Deliver to Coop
                       </div>
                     </div>
                   </div>
@@ -998,13 +966,6 @@ export default function MiniGame() {
             )}
           </div>
         </section>
-
-        {isPlaying && (
-          <p className="mt-3 text-center text-[11px] text-[#7a8a70]">
-            EGB Backyard · 🐤 fast chicks · 🐓 high value · tight combos · one
-            coupon per round (highest tier only)
-          </p>
-        )}
       </div>
     </main>
   );
