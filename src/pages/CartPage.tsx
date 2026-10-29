@@ -1,7 +1,6 @@
-// src/pages/CartPage.tsx
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, ShoppingBag, Sparkles, Trash2 } from "lucide-react";
+import { ArrowRight, ShoppingBag, Sparkles, Trash2, AlertCircle } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import api, { apiErrorMessage } from "../services/api";
@@ -25,6 +24,25 @@ interface EventItem {
   status: string;
   is_featured?: boolean;
 }
+
+/**
+ * Sanitizes error messages to ensure internal server endpoints, 
+ * base URLs, or technical paths are never exposed on the UI.
+ */
+const getCleanErrorMessage = (error: unknown, fallback: string): string => {
+  const message = apiErrorMessage(error, fallback);
+  if (
+    !message ||
+    message.includes("http://") ||
+    message.includes("https://") ||
+    message.includes("/api/") ||
+    message.includes("ERR_") ||
+    message.includes("Network Error")
+  ) {
+    return fallback;
+  }
+  return message;
+};
 
 function normalizeImageValue(value: unknown): string[] {
   if (typeof value === "string") {
@@ -129,7 +147,9 @@ const CartPage: React.FC = () => {
 
       setEventsError("");
     } catch (error) {
-      setEventsError(apiErrorMessage(error, "Unable to load promotions."));
+      setEventsError(
+        getCleanErrorMessage(error, "Unable to load active promotions right now.")
+      );
       setActiveEvents([]);
     } finally {
       setIsLoadingEvents(false);
@@ -182,8 +202,13 @@ const CartPage: React.FC = () => {
     });
   };
 
+  // Sanitized coupon error message protection
+  const safeCouponError = couponError
+    ? getCleanErrorMessage(couponError, "Invalid or expired coupon code.")
+    : "";
+
   return (
-    <main className="min-h-screen bg-stone-50 px-4 pb-20 pt-24 text-stone-900 sm:px-6 lg:px-10">
+    <main className="min-h-screen bg-stone-50 px-4 pb-20 pt-24 text-stone-900 sm:px-6 lg:px-10 font-sans">
       <div className="mx-auto max-w-7xl">
         <header className="mb-10 flex flex-col gap-5 border-b border-stone-200 pb-8 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -243,7 +268,7 @@ const CartPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={clearCart}
-                  className="inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-50"
+                  className="inline-flex min-h-10 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-50 cursor-pointer"
                 >
                   <Trash2 size={16} /> Clear cart
                 </button>
@@ -314,7 +339,7 @@ const CartPage: React.FC = () => {
                               aria-label={`Decrease quantity of ${item.name || "product"}`}
                               disabled={quantity <= 1}
                               onClick={() => updateQuantity(id, -1)}
-                              className="h-full w-10 text-lg transition hover:bg-stone-100 disabled:opacity-30"
+                              className="h-full w-10 text-lg transition hover:bg-stone-100 disabled:opacity-30 cursor-pointer"
                             >
                               −
                             </button>
@@ -327,7 +352,7 @@ const CartPage: React.FC = () => {
                               type="button"
                               aria-label={`Increase quantity of ${item.name || "product"}`}
                               onClick={() => updateQuantity(id, 1)}
-                              className="h-full w-10 text-lg transition hover:bg-stone-100"
+                              className="h-full w-10 text-lg transition hover:bg-stone-100 cursor-pointer"
                             >
                               +
                             </button>
@@ -341,7 +366,7 @@ const CartPage: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => removeFromCart(id)}
-                              className="text-sm font-semibold text-rose-700 hover:underline"
+                              className="text-sm font-semibold text-rose-700 hover:underline cursor-pointer"
                             >
                               Remove
                             </button>
@@ -392,14 +417,15 @@ const CartPage: React.FC = () => {
                 {eventsError && (
                   <div
                     role="status"
-                    className="mt-3 rounded-lg bg-amber-50 p-3 text-xs leading-5 text-amber-800"
+                    className="mt-3 rounded-lg bg-amber-50 p-3 text-xs leading-5 text-amber-800 flex items-center gap-2"
                   >
-                    {eventsError}
+                    <AlertCircle size={14} className="shrink-0" />
+                    <span>{eventsError}</span>
 
                     <button
                       type="button"
                       onClick={() => void fetchActiveEvents()}
-                      className="ml-1 font-bold underline"
+                      className="ml-auto font-bold underline cursor-pointer"
                     >
                       Retry
                     </button>
@@ -433,20 +459,21 @@ const CartPage: React.FC = () => {
                         !couponInput?.trim() ||
                         !!appliedCoupon
                       }
-                      className="rounded-xl bg-stone-900 px-4 text-xs font-bold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="rounded-xl bg-stone-900 px-4 text-xs font-bold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
                     >
                       {isApplying ? "Wait…" : "Apply"}
                     </button>
                   </div>
 
-                  {couponError && (
-                    <p role="alert" className="mt-2 text-sm text-rose-700">
-                      {couponError}
+                  {safeCouponError && (
+                    <p role="alert" className="mt-2 text-xs text-rose-700 flex items-center gap-1.5">
+                      <AlertCircle size={14} className="shrink-0" />
+                      {safeCouponError}
                     </p>
                   )}
 
                   {couponSuccess && (
-                    <p role="status" className="mt-2 text-sm text-emerald-700">
+                    <p role="status" className="mt-2 text-xs text-emerald-700 font-semibold">
                       {couponSuccess}
                     </p>
                   )}
@@ -464,7 +491,7 @@ const CartPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={handleRemoveCoupon}
-                        className="text-xs font-bold text-rose-700 hover:underline"
+                        className="text-xs font-bold text-rose-700 hover:underline cursor-pointer"
                       >
                         Remove
                       </button>
@@ -533,7 +560,7 @@ const CartPage: React.FC = () => {
                   type="button"
                   onClick={proceedToCheckout}
                   disabled={!cartItems.length}
-                  className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-800 px-4 text-sm font-bold text-white transition hover:bg-emerald-900 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-800 px-4 text-sm font-bold text-white transition hover:bg-emerald-900 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer shadow-sm"
                 >
                   Proceed to checkout <ArrowRight size={17} />
                 </button>
