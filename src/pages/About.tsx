@@ -63,7 +63,7 @@ const About = () => {
   ];
 
   const values = [
-    "Quality Products",
+    "Quality Livestock",
     "Customer Satisfaction",
     "Trust & Security",
     "Continuous Improvement",
@@ -112,9 +112,10 @@ const About = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="max-w-3xl mx-auto mt-8 text-lg md:text-xl text-zinc-600 leading-relaxed"
             >
-              EGB Backyard is a project built on the CC Ecom developer
-              platform — created to deliver a trusted digital shopping
-              experience through quality, reliability, and innovation.
+              EGB Backyard is a rooster farm e-commerce project built on the
+              CC Ecom developer platform — created to deliver quality livestock,
+              reliable service, and a trusted shopping experience on a worldwide
+              scale.
             </motion.p>
           </div>
         </section>
@@ -147,70 +148,47 @@ const About = () => {
                     applications.{" "}
                     <strong className="text-zinc-900">EGB Backyard</strong> is
                     one of the projects built on this platform — a digital
-                    commerce experience where customers can purchase products
-                    directly from their devices.
+                    commerce experience focused on rooster farms, where
+                    customers can purchase quality roosters and related farm
+                    products directly from their devices.
                   </p>
 
                   <p>
-                    It was crafted and founded by Yelrah YC (Ygaslavian
-                    Concierge) with a simple vision: to provide products that
-                    contribute to everyday lifestyle — from clothing and
-                    fragrances to food and beverages.
-                  </p>
-
-                  <p>
-                    The purpose behind this platform was never just about
-                    creating another online store. It was about building
-                    something meaningful, useful, and capable of serving people
-                    while representing Filipino creativity, determination, and
-                    innovation.
+                    The goal was never just to create another online store. It
+                    was to build a meaningful and useful platform capable of
+                    serving people better — not only within the Philippines, but
+                    on a worldwide scale.
                   </p>
 
                   <blockquote className="border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl p-6 italic text-zinc-700">
-                    “I started building this platform when I was 16 years old
-                    while living in a shelter I can’t consider a house — the
-                    life of having almost nothing but an empty stomach. Due to
-                    poverty the resources I had were limited, but my
-                    consciousness continued to soar beyond those limitations.
-                    Despite those challenges, I realized that every human being
-                    has a different way to survive the harder parts of life, and
-                    a different vision of the chances ahead.”
+                    “CC Ecom development platform created this shop in order to
+                    serve better services — not just for Filipinos, but on a
+                    worldwide scale. Every feature, every process, and every
+                    decision was designed so that quality livestock and reliable
+                    service could reach more people, more efficiently, and with
+                    greater trust.”
                   </blockquote>
 
                   <p>
-                    Throughout the journey, I started from scratch — zero and
-                    broke. Rather than focusing on obstacles, I focused on
-                    finding solutions and improving my skills. Every challenge
-                    became an opportunity to learn something new and move one
-                    step closer to my goals.
+                    Building a digital platform for rooster farms requires
+                    attention, focus, and genuine care for both the animals and
+                    the customers. These principles became the foundation of
+                    EGB Backyard’s development on the CC Ecom platform.
                   </p>
 
                   <p>
-                    Building a digital platform requires attention, focus, and
-                    genuine interest. These three principles became the
-                    foundation of both my personal growth and the development of
-                    EGB Backyard on the CC Ecom platform.
-                  </p>
-
-                  <p>
-                    Starting from scratch meant learning everything step by
-                    step. I studied the fundamentals of software development,
-                    explored modern technologies, and used artificial
-                    intelligence as a tool to improve efficiency and accelerate
-                    learning.
-                  </p>
-
-                  <p>
-                    At the same time, I invested time in understanding software
-                    security to ensure that customer trust and safety would
-                    always remain a priority.
+                    From the start, the focus has been on continuous learning,
+                    modern technology, and strong software security — ensuring
+                    that customer trust and the safety of every transaction
+                    remain a priority.
                   </p>
 
                   <p>
                     Today, EGB Backyard continues to grow with the same values
-                    it started with: quality, reliability, continuous learning,
-                    and a commitment to serving customers with integrity —
-                    powered by the CC Ecom developer platform.
+                    it started with: quality livestock, reliability, continuous
+                    improvement, and a commitment to serving customers with
+                    integrity — powered by the CC Ecom developer platform and
+                    ready to serve a global audience.
                   </p>
                 </div>
               </div>
@@ -237,12 +215,10 @@ const About = () => {
                 <h3 className="text-3xl font-bold mb-4">Our Mission</h3>
 
                 <p className="text-zinc-600 leading-relaxed">
-                  To provide quality products, dependable service, and a secure
-                  shopping experience while continuously improving the value we
-                  deliver to our customers. When the season turns in my favor
-                  and the dream I struggled for the most is finally within
-                  reach — even if my life itself was the collateral — I will
-                  hold it in my hands and contribute to what the nation needs.
+                  To provide quality roosters and farm products, dependable
+                  service, and a secure shopping experience while continuously
+                  improving the value we deliver to customers — locally and
+                  worldwide.
                 </p>
               </motion.div>
 
@@ -327,10 +303,11 @@ const About = () => {
               <h2 className="text-4xl font-bold mb-6">Our Commitment</h2>
 
               <p className="text-zinc-600 text-lg leading-relaxed">
-                Every decision we make is guided by a commitment to quality,
-                customer satisfaction, and continuous improvement. We aim to
-                provide a shopping experience that customers can trust today and
-                in the future — powered by the CC Ecom developer platform.
+                Every decision we make is guided by a commitment to quality
+                livestock, customer satisfaction, and continuous improvement. We
+                aim to provide a shopping experience that customers can trust
+                today and in the future — powered by the CC Ecom developer
+                platform and built to serve the world.
               </p>
             </motion.div>
           </div>
@@ -350,8 +327,8 @@ const About = () => {
             </motion.h2>
 
             <p className="text-zinc-500 text-lg mb-10">
-              Discover products carefully selected to bring quality,
-              convenience, and value to your lifestyle.
+              Discover quality roosters and farm products carefully selected to
+              bring value, reliability, and excellence to your farm.
             </p>
 
             <Link to="/Shop">
