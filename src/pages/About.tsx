@@ -71,12 +71,11 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white overflow-hidden">
-      {/* Background Effects */}
+    <div className="min-h-screen bg-white text-zinc-900 overflow-hidden">
+      {/* Soft Background Accents */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-0 h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-[150px]" />
-
-        <div className="absolute bottom-0 right-0 h-[500px] w-[500px] rounded-full bg-sky-500/10 blur-[150px]" />
+        <div className="absolute top-0 left-0 h-[500px] w-[500px] rounded-full bg-orange-500/5 blur-[150px]" />
+        <div className="absolute bottom-0 right-0 h-[500px] w-[500px] rounded-full bg-sky-500/5 blur-[150px]" />
       </div>
 
       <div className="relative z-10">
@@ -88,9 +87,9 @@ const About = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-orange-500/20 bg-orange-500/10 text-orange-400 text-sm font-semibold mb-8">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-orange-500/20 bg-orange-50 text-orange-600 text-sm font-semibold mb-8">
                 <Sparkles size={16} />
-                About CC Ecom
+                About EGB Backyard
               </span>
             </motion.div>
 
@@ -102,7 +101,7 @@ const About = () => {
             >
               Our Story,
               <br />
-              <span className="bg-gradient-to-r from-orange-400 to-sky-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-500 to-sky-500 bg-clip-text text-transparent">
                 Our Purpose
               </span>
             </motion.h1>
@@ -111,10 +110,11 @@ const About = () => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="max-w-3xl mx-auto mt-8 text-lg md:text-xl text-zinc-400 leading-relaxed"
+              className="max-w-3xl mx-auto mt-8 text-lg md:text-xl text-zinc-600 leading-relaxed"
             >
-              Building a trusted digital shopping experience through quality,
-              reliability, innovation, and a commitment to serving customers.
+              EGB Backyard is a project built on the CC Ecom developer
+              platform — created to deliver a trusted digital shopping
+              experience through quality, reliability, and innovation.
             </motion.p>
           </div>
         </section>
@@ -129,25 +129,33 @@ const About = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-sky-500/10 blur-3xl rounded-[40px]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-sky-500/5 blur-3xl rounded-[40px]" />
 
-              <div className="relative bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-[32px] p-8 md:p-14">
-                <span className="inline-flex px-4 py-2 rounded-full bg-sky-500/10 text-sky-400 text-sm font-semibold mb-6">
+              <div className="relative bg-white border border-zinc-200 shadow-sm rounded-[32px] p-8 md:p-14">
+                <span className="inline-flex px-4 py-2 rounded-full bg-sky-50 text-sky-600 text-sm font-semibold mb-6">
                   Our Story
                 </span>
 
                 <h2 className="text-4xl font-bold mb-8">
-                  How CC Ecom Started
+                  How EGB Backyard Started
                 </h2>
 
-                <div className="space-y-6 text-zinc-300 text-lg leading-relaxed">
+                <div className="space-y-6 text-zinc-600 text-lg leading-relaxed">
                   <p>
-                    CC Ecom is a digital commerce platform where customers can
-                    directly purchase CounciCroff products from their devices.
-                    It was crafted and founded by Yelrah YC (Ygaslavian Concierge) with a
-                    simple vision: to provide products that contribute to
-                    everyday lifestyle—from clothing and fragrances to food and
-                    beverages.
+                    <strong className="text-zinc-900">CC Ecom</strong> is a
+                    developer platform that mainly generates e-commerce
+                    applications.{" "}
+                    <strong className="text-zinc-900">EGB Backyard</strong> is
+                    one of the projects built on this platform — a digital
+                    commerce experience where customers can purchase products
+                    directly from their devices.
+                  </p>
+
+                  <p>
+                    It was crafted and founded by Yelrah YC (Ygaslavian
+                    Concierge) with a simple vision: to provide products that
+                    contribute to everyday lifestyle — from clothing and
+                    fragrances to food and beverages.
                   </p>
 
                   <p>
@@ -158,14 +166,20 @@ const About = () => {
                     innovation.
                   </p>
 
-                  <blockquote className="border-l-4 border-orange-500 bg-zinc-950/50 rounded-r-2xl p-6 italic text-zinc-200">
+                  <blockquote className="border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl p-6 italic text-zinc-700">
                     “I started building this platform when I was 16 years old
-                    while living in a shelter l can't be consider a house,the life of being nothing but only the empty stomach.Due the poverty the resources i have is limited but my consciousness is continuously sour then limitions and agitate destroyed.
-                    Despite those challenges, I realized that every humam being has a different way to survive the white part of life,which is different vision of the chances.”
+                    while living in a shelter I can’t consider a house — the
+                    life of having almost nothing but an empty stomach. Due to
+                    poverty the resources I had were limited, but my
+                    consciousness continued to soar beyond those limitations.
+                    Despite those challenges, I realized that every human being
+                    has a different way to survive the harder parts of life, and
+                    a different vision of the chances ahead.”
                   </blockquote>
 
                   <p>
-                    Throughout the journey,i started it from scratch,zero and broke. Rather than focusing on obstacles, I focused on
+                    Throughout the journey, I started from scratch — zero and
+                    broke. Rather than focusing on obstacles, I focused on
                     finding solutions and improving my skills. Every challenge
                     became an opportunity to learn something new and move one
                     step closer to my goals.
@@ -175,7 +189,7 @@ const About = () => {
                     Building a digital platform requires attention, focus, and
                     genuine interest. These three principles became the
                     foundation of both my personal growth and the development of
-                    CC Ecom.
+                    EGB Backyard on the CC Ecom platform.
                   </p>
 
                   <p>
@@ -193,9 +207,10 @@ const About = () => {
                   </p>
 
                   <p>
-                    Today, CC Ecom continues to grow with the same values it
-                    started with: quality, reliability, continuous learning, and
-                    a commitment to serving customers with integrity.
+                    Today, EGB Backyard continues to grow with the same values
+                    it started with: quality, reliability, continuous learning,
+                    and a commitment to serving customers with integrity —
+                    powered by the CC Ecom developer platform.
                   </p>
                 </div>
               </div>
@@ -215,22 +230,25 @@ const About = () => {
             >
               <motion.div
                 variants={fadeUp}
-                className="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-3xl p-10"
+                className="bg-white border border-zinc-200 shadow-sm rounded-3xl p-10"
               >
-                <Target className="w-12 h-12 text-sky-400 mb-6" />
+                <Target className="w-12 h-12 text-sky-500 mb-6" />
 
                 <h3 className="text-3xl font-bold mb-4">Our Mission</h3>
 
-                <p className="text-zinc-300 leading-relaxed">
+                <p className="text-zinc-600 leading-relaxed">
                   To provide quality products, dependable service, and a secure
                   shopping experience while continuously improving the value we
-                  deliver to our customers.When the time or seasson turn to me and the dream i struggle the most even my life is the collateral or guarantee.Is will be in my hand and contributing the nation needs.
+                  deliver to our customers. When the season turns in my favor
+                  and the dream I struggled for the most is finally within
+                  reach — even if my life itself was the collateral — I will
+                  hold it in my hands and contribute to what the nation needs.
                 </p>
               </motion.div>
 
               <motion.div
                 variants={fadeUp}
-                className="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-3xl p-10"
+                className="bg-white border border-zinc-200 shadow-sm rounded-3xl p-10"
               >
                 <Gem className="w-12 h-12 text-orange-500 mb-6" />
 
@@ -240,12 +258,9 @@ const About = () => {
                   {values.map((value) => (
                     <div
                       key={value}
-                      className="flex items-center gap-3 text-zinc-300"
+                      className="flex items-center gap-3 text-zinc-700"
                     >
-                      <HeartHandshake
-                        size={18}
-                        className="text-orange-500"
-                      />
+                      <HeartHandshake size={18} className="text-orange-500" />
                       {value}
                     </div>
                   ))}
@@ -268,7 +283,7 @@ const About = () => {
                 variants={fadeUp}
                 className="text-4xl font-bold text-center mb-14"
               >
-                Why Choose CC Ecom?
+                Why Choose EGB Backyard?
               </motion.h2>
 
               <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -279,9 +294,9 @@ const About = () => {
                     whileHover={{
                       y: -8,
                     }}
-                    className="bg-zinc-900/80 backdrop-blur-xl border border-zinc-800 rounded-3xl p-8"
+                    className="bg-white border border-zinc-200 shadow-sm rounded-3xl p-8"
                   >
-                    <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center mb-5">
+                    <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-5">
                       <feature.icon className="text-orange-500" size={28} />
                     </div>
 
@@ -289,7 +304,7 @@ const About = () => {
                       {feature.title}
                     </h3>
 
-                    <p className="text-zinc-400 leading-relaxed">
+                    <p className="text-zinc-500 leading-relaxed">
                       {feature.description}
                     </p>
                   </motion.div>
@@ -307,17 +322,15 @@ const About = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="bg-gradient-to-r from-orange-500/10 to-sky-500/10 border border-zinc-800 rounded-[32px] p-10 md:p-14"
+              className="bg-gradient-to-r from-orange-50 to-sky-50 border border-zinc-200 rounded-[32px] p-10 md:p-14"
             >
-              <h2 className="text-4xl font-bold mb-6">
-                Our Commitment
-              </h2>
+              <h2 className="text-4xl font-bold mb-6">Our Commitment</h2>
 
-              <p className="text-zinc-300 text-lg leading-relaxed">
+              <p className="text-zinc-600 text-lg leading-relaxed">
                 Every decision we make is guided by a commitment to quality,
                 customer satisfaction, and continuous improvement. We aim to
                 provide a shopping experience that customers can trust today and
-                in the future.
+                in the future — powered by the CC Ecom developer platform.
               </p>
             </motion.div>
           </div>
@@ -333,10 +346,10 @@ const About = () => {
               viewport={{ once: true }}
               className="text-4xl md:text-5xl font-bold mb-6"
             >
-              Explore What CC Ecom Has To Offer
+              Explore What EGB Backyard Has To Offer
             </motion.h2>
 
-            <p className="text-zinc-400 text-lg mb-10">
+            <p className="text-zinc-500 text-lg mb-10">
               Discover products carefully selected to bring quality,
               convenience, and value to your lifestyle.
             </p>
@@ -345,7 +358,7 @@ const About = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-3 bg-orange-500 hover:bg-orange-600 px-8 py-4 rounded-full font-semibold text-lg transition-colors"
+                className="inline-flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-colors"
               >
                 Start Shopping
                 <ArrowRight size={22} />
