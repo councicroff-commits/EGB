@@ -21,6 +21,16 @@ if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
 }
 // ========================================================
 
+// ========== PWA Service Worker ==========
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((reg) => console.log('SW registered', reg))
+      .catch((err) => console.log('SW registration failed', err));
+  });
+}
+// =======================================
+
 (window as any).useAuth = useAuth;
 
 const AuthenticatedProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
